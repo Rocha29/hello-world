@@ -1,0 +1,34 @@
+import os
+import glob
+import webbrowser
+from AluriReport import AluriReport  # Supondo que você tenha a biblioteca AluriReport instalada
+
+def gerar_report_alura(plataforma):
+    if plataforma.lower() == "android":
+        pasta_relatorios = "androids-log"
+    elif plataforma.lower() == "ios":
+        pasta_relatorios = "ios-log"
+    else:
+        raise ValueError("Plataforma inválida. Escolha entre 'android' ou 'ios'.")
+
+    # Lista todos os arquivos XML na pasta de relatórios correspondente à plataforma
+    caminho_relatorios = os.path.join(pasta_relatorios, "*.xml")
+    arquivos_xml = glob.glob(caminho_relatorios)
+
+    if not arquivos_xml:
+        print("Nenhum arquivo XML encontrado na pasta de relatórios.")
+        return
+
+    # Caminho para o relatório HTML gerado pelo AluriReport
+    caminho_relatorio_html = os.path.join("caminho_para_o_seu_relatorio_no_aluri", f"report_{plataforma}.html")
+
+    # Gera o relatório HTML com o AluriReport
+    AluriReport(arquivos_xml, caminho_relatorio_html)
+
+    # Abre o relatório gerado em um navegador
+    webbrowser.open(os.path.abspath(caminho_relatorio_html))
+
+# Exemplo de uso
+if __name__ == "__main__":
+    plataforma = input("Qual plataforma você deseja testar (Android ou iOS)? ").strip()
+    gerar_report_alura(plataforma)
